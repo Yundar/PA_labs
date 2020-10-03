@@ -22,10 +22,8 @@ def find_lmin(oriented_graph, top):
     min_path = min_element
     visited_tops.append(top)
     ind = copy_graph[top].index(min_element)
-
     for i in range(len(copy_graph)):
         copy_graph[top][i], copy_graph[i][top] = float('inf'), float('inf')
-
     while len(visited_tops) != len(copy_graph):
         if len(visited_tops) == len(copy_graph) - 1:
             previous_top = ind
@@ -40,7 +38,13 @@ def find_lmin(oriented_graph, top):
             ind = copy_graph[ind].index(min_element)
             for i in range(len(copy_graph)):
                 copy_graph[previous_top][i], copy_graph[i][previous_top] = float('inf'), float('inf')
-
     return min_path
+
+
+graph = create_graph(5)
+for i in graph:
+    print(i)
+a = find_lmin(graph, 0)
+print(a)
 
 
