@@ -86,29 +86,29 @@ def get_random(l):
 
 def select_next_city(ant):
     global cities_number, distance, pheromone
-    denom = 0
+    su = 0
     not_visited = []
 
-    for to in range(cities_number):
-        if to not in ant.path:
-            ap = ant_product(ant.cur_city, to)
-            not_visited.append((to, ap))
-            denom += ap
+    for city in range(cities_number):
+        if city not in ant.path:
+            ap = ant_product(ant.cur_city, city)
+            not_visited.append((city, ap))
+            su += ap
 
     assert not_visited
-    not_visited = [(val, ap / denom) for (val, ap) in not_visited]
-    to = get_random(not_visited)
-    return to
+    not_visited = [(val, ap / su) for (val, ap) in not_visited]
+    city = get_random(not_visited)
+    return city
     i = 0
     while True:
-        to, ap = not_visited[i]
-        p = ap / denom
+        city, ap = not_visited[i]
+        p = ap / su
         if random.random() < p:
             break
         i += 1
         i = i % len(not_visited)
-    assert ant.cur_city != to
-    return to
+    assert ant.cur_city != city
+    return city
 
 
 def ants_move():

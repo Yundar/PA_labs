@@ -12,7 +12,6 @@ print(best)
 ants_number = 30
 init_pheromone = (1 / cities_number)
 max_iterations = 1000
-pheromone_iter = 100
 
 
 class Ant:
@@ -84,23 +83,23 @@ def get_random(l):
 
 def select_next_city(ant):
     global cities_number, distance, pheromone
-    denom = 0
+    su = 0
     not_visited = []
 
     for city in range(cities_number):
         if city not in ant.path:
             ap = ant_product(ant.cur_city, city)
             not_visited.append((city, ap))
-            denom += ap
+            su += ap
 
     assert not_visited
-    not_visited = [(val, ap / denom) for (val, ap) in not_visited]
+    not_visited = [(val, ap / su) for (val, ap) in not_visited]
     city = get_random(not_visited)
     return city
     r = 0
     while True:
         city, ap = not_visited[r]
-        p = ap / denom
+        p = ap / su
         if random.random() < p:
             break
         r = random.randrange(0, cities_number - 1)
@@ -120,11 +119,11 @@ def ants_move():
     return moving
 
 
-def update_trails():
+def update_roads():
     global cities_number, pheromone, rho, init_pheromone, ants
 
     for ant in ants:
-        pheromone_amount = pheromone_iter / ant.path_length
+        pheromone_amount = best / ant.path_length
 
         for i in range(cities_number):
             if i == cities_number - 1:
@@ -146,7 +145,6 @@ def restart_ants():
     for ant in ants:
         if ant.path_length < best:
             best = ant.path_length
-            best_ant = ant
             best_way = ant.path
 
         ant.reset(city)
@@ -167,6 +165,8 @@ if __name__ == '__main__':
             print('best result: ', best)
 
         if ants_move() == 0:
-            update_trails()
+            update_roads()
             cur_iteration != max_iterations and restart_ants()
+    for i in pheromone:
+        print(i)
     print('\n', 'best result: ', best)
