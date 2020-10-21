@@ -26,7 +26,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
   </component>
-  <component name="RunManager" selected="Python.antalg">
+  <component name="RunManager" selected="Python.antalg_2">
     <configuration name="antalg" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PA_labs" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -134,8 +134,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.antalg" />
         <item itemvalue="Python.antalg_2" />
+        <item itemvalue="Python.antalg" />
         <item itemvalue="Python.graph_lab2" />
         <item itemvalue="Python.testing" />
         <item itemvalue="Python.reserve" />
@@ -154,22 +154,26 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1515" height="614" key="GridCell.Tab.0.bottom" timestamp="1601839989125">
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1603137403835">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="614" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1601839989125" />
-    <state width="1515" height="614" key="GridCell.Tab.0.center" timestamp="1601839989124">
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1603137403835" />
+    <state width="1515" height="209" key="GridCell.Tab.0.bottom" timestamp="1601884233356">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="614" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1601839989124" />
-    <state width="1515" height="614" key="GridCell.Tab.0.left" timestamp="1601839989124">
+    <state width="1515" height="209" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1601884233356" />
+    <state width="1515" height="209" key="GridCell.Tab.0.center" timestamp="1601884233356">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="614" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1601839989124" />
-    <state width="1515" height="614" key="GridCell.Tab.0.right" timestamp="1601839989124">
+    <state width="1515" height="209" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1601884233356" />
+    <state width="1515" height="209" key="GridCell.Tab.0.left" timestamp="1601884233356">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="614" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1601839989124" />
+    <state width="1515" height="209" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1601884233356" />
+    <state width="1515" height="209" key="GridCell.Tab.0.right" timestamp="1601884233356">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1515" height="209" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1601884233356" />
     <state x="611" y="197" key="refactoring.ChangeSignatureDialog" timestamp="1601834479557">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
