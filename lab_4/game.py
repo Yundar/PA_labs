@@ -73,7 +73,37 @@ class Game:
                         line.append((row, col))
 
         if len(line) == 3:
-            if line[2][1] - line[1][1] == line[1][1] - line[0][1] and line[2][0] - line[1][0] == line[1][0] - line[0][0]:
+            # vertical
+            if (line[0][0] == line[1][0] == line[2][0]) and (
+                    line[0][1] == line[1][1] - 1 == line[2][1] - 2):
+                if self.turn[0] == 255:
+                    self.turn = 'White'
+                else:
+                    self.turn = 'Black'
+                self.valid_moves = []
+                messagebox.showinfo('Winner', str(self.turn))
+                return True
+
+            # horizontal
+            if (line[0][1] == line[1][1] == line[2][1]) and (
+                    line[0][0] == line[1][0] - 1 == line[2][0] - 2):
+                if self.turn[0] == 255:
+                    self.turn = 'White'
+                else:
+                    self.turn = 'Black'
+                self.valid_moves = []
+                messagebox.showinfo('Winner', str(self.turn))
+                return True
+
+            # diagonal
+            if (line[0][0] == line[1][0] - 1 == line[2][0] - 2) and ((
+                                                                             line[0][1] ==
+                                                                             line[1][1] - 1 ==
+                                                                             line[2][
+                                                                                 1] - 2) or (
+                                                                             line[0][1] ==
+                                                                             line[1][1] + 1 ==
+                                                                             line[2][1] + 2)):
                 if self.turn[0] == 255:
                     self.turn = 'White'
                 else:

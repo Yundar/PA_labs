@@ -1,6 +1,7 @@
 import pygame
 from .constants import BLACK, WHITE, ROWS, SQUARE_SIZE, COLS
 from .piece import Piece
+from copy import deepcopy
 
 
 class Board:
@@ -51,21 +52,167 @@ class Board:
     def get_valid_moves(self, piece):
         moves = []
         piece_row, piece_col = piece.row, piece.col
-        for row in range(ROWS):
-            for col in range(COLS):
-                if row + 1 == piece_row or row - 1 == piece_row or row == piece_row:
-                    if col + 1 == piece_col or col - 1 == piece_col or col == piece_col:
-                        if self.board[row][col] == 0:
-                            moves.append((row, col))
+
+        row, col = piece_row, piece_col
+        fl = 0
+        while row != 0:
+            row -= 1
+            if self.board[row][col] != 0:
+                if row + 1 != piece_row:
+                    moves.append((row + 1, col))
+                fl = 1
+                break
+        if fl == 0 and piece_row != 0:
+            moves.append((0, col))
+
+        row, col = piece_row, piece_col
+        fl = 0
+        while row != 4:
+            row += 1
+            if self.board[row][col] != 0:
+                if row - 1 != piece_row:
+                    moves.append((row - 1, col))
+                fl = 1
+                break
+        if fl == 0 and piece_row != 4:
+            moves.append((4, col))
+
+        row, col = piece_row, piece_col
+        fl = 0
+        while col != 0:
+            col -= 1
+            if self.board[row][col] != 0:
+                if col + 1 != piece_col:
+                    moves.append((row, col + 1))
+                fl = 1
+                break
+        if fl == 0 and piece_col != 0:
+            moves.append((row, 0))
+
+        row, col = piece_row, piece_col
+        fl = 0
+        while col != 4:
+            col += 1
+            if self.board[row][col] != 0:
+                if col - 1 != piece_col:
+                    moves.append((row, col - 1))
+                fl = 1
+                break
+        if fl == 0 and piece_col != 4:
+            moves.append((row, 4))
+
+        row, col = piece_row, piece_col
+        fl = 0
+        while col != 4 and row != 4:
+            col += 1
+            row += 1
+            if self.board[row][col] != 0:
+                if row - 1 != piece_row and col - 1 != piece_col:
+                    moves.append((row - 1, col - 1))
+                fl = 1
+                break
+        if fl == 0 and piece_row != 4 and piece_col != 4:
+            m = max(piece_row, piece_col)
+            moves.append((4 - m + piece_row, 4 - m + piece_col))
+
+        row, col = piece_row, piece_col
+        fl = 0
+        while col != 0 and row != 0:
+            col -= 1
+            row -= 1
+            if self.board[row][col] != 0:
+                fl = 1
+                if row + 1 != piece_row and col + 1 != piece_col:
+                    moves.append((row + 1, col + 1))
+                break
+        if fl == 0 and piece_row != 0 and piece_col != 0:
+            m = min(piece_row, piece_col)
+            moves.append((0 - m + piece_row, 0 - m + piece_col))
+
+        row, col = piece_row, piece_col
+        fl = 0
+        while col != 0 and row != 4:
+            col -= 1
+            row += 1
+            if self.board[row][col] != 0:
+                fl = 1
+                if row - 1 != piece_row and col + 1 != piece_col:
+                    moves.append((row - 1, col + 1))
+                break
+        if fl == 0 and piece_row != 4 and piece_col != 0:
+            row, col = piece_row, piece_col
+            while col != 0 and row != 4:
+                col -= 1
+                row += 1
+                if row == 4:
+                    moves.append((row, col))
+                    break
+                if col == 0:
+                    moves.append((row, col))
+                    break
+
+        row, col = piece_row, piece_col
+        fl = 0
+        while col != 4 and row != 0:
+            col += 1
+            row -= 1
+            if self.board[row][col] != 0:
+                fl = 1
+                if row + 1 != piece_row and col - 1 != piece_col:
+                    moves.append((row + 1, col - 1))
+                break
+        if fl == 0 and piece_row != 0 and piece_col != 4:
+            row, col = piece_row, piece_col
+            while col != 4 and row != 0:
+                col += 1
+                row -= 1
+                if row == 0:
+                    moves.append((row, col))
+                    break
+                if col == 4:
+                    moves.append((row, col))
+                    break
         return moves
 
     def evaluate(self):
-        if self.winner() == WHITE:
-            return 3
-        elif self.winner() == BLACK:
-            return 0
-        else:
-            return 2
+        black, white_line = self.find_pieces()
+        evaluation = 0
+        # vertical
+        if (white_line[0][0] == white_line[1][0] == white_line[2][0]) and (
+                white_line[0][1] == white_line[1][1] - 1 == white_line[2][1] - 2):
+            evaluation += 10 ** 4
+
+        # horizontal
+        if (white_line[0][1] == white_line[1][1] == white_line[2][1]) and (
+                white_line[0][0] == white_line[1][0] - 1 == white_line[2][0] - 2):
+            evaluation += 10 ** 4
+
+        # diagonal
+        if (white_line[0][0] == white_line[1][0] - 1 == white_line[2][0] - 2) and ((
+                                                                                           white_line[0][1] ==
+                                                                                           white_line[1][1] - 1 ==
+                                                                                           white_line[2][
+                                                                                               1] - 2) or (
+                                                                                           white_line[0][1] ==
+                                                                                           white_line[1][1] + 1 ==
+                                                                                           white_line[2][1] + 2)):
+            evaluation += 10 ** 4
+
+        return evaluation
+
+    def find_pieces(self):
+        black = []
+        white = []
+
+        for row in range(ROWS):
+            for col in range(COLS):
+                if len(str(self.board[row][col])) != 1:
+                    if str(self.board[row][col])[1] == '2':
+                        white.append((row, col))
+                    if str(self.board[row][col])[1] == '0':
+                        black.append((row, col))
+
+        return black, white
 
     def get_all_pieces(self, color):
         pieces = []
@@ -76,23 +223,40 @@ class Board:
         return pieces
 
     def winner(self):
-        black_line = []
-        white_line = []
+        black_line, white_line = self.find_pieces()
 
-        for row in range(ROWS):
-            for col in range(COLS):
-                if len(str(self.board[row][col])) != 1:
-                    if str(self.board[row][col])[1] == '2':
-                        white_line.append((row, col))
-                    if str(self.board[row][col])[1] == '0':
-                        black_line.append((row, col))
-
-        if white_line[2][1] - white_line[1][1] == white_line[1][1] - white_line[0][1] and white_line[2][0] - \
-                white_line[1][0] == white_line[1][0] - white_line[0][0]:
+        # vertical
+        if (white_line[0][0] == white_line[1][0] == white_line[2][0]) and (
+                white_line[0][1] == white_line[1][1] - 1 == white_line[2][1] - 2):
             return WHITE
+        if (black_line[0][0] == black_line[1][0] == black_line[2][0]) and (
+                black_line[0][1] == black_line[1][1] - 1 == black_line[2][1] - 2):
+            return BLACK
 
-        if black_line[2][1] - black_line[1][1] == black_line[1][1] - black_line[0][1] and black_line[2][0] - \
-                black_line[1][0] == black_line[1][0] - black_line[0][0]:
+        # horizontal
+        if (white_line[0][1] == white_line[1][1] == white_line[2][1]) and (
+                white_line[0][0] == white_line[1][0] - 1 == white_line[2][0] - 2):
+            return WHITE
+        if (black_line[0][1] == black_line[1][1] == black_line[2][1]) and (
+                black_line[0][0] == black_line[1][0] - 1 == black_line[2][0] - 2):
+            return BLACK
+
+        # diagonal
+        if (white_line[0][0] == white_line[1][0] - 1 == white_line[2][0] - 2) and ((
+                                                                                           white_line[0][1] ==
+                                                                                           white_line[1][1] - 1 ==
+                                                                                           white_line[2][1] - 2) or (
+                                                                                           white_line[0][1] ==
+                                                                                           white_line[1][1] + 1 ==
+                                                                                           white_line[2][1] + 2)):
+            return WHITE
+        if (black_line[0][0] == black_line[1][0] - 1 == black_line[2][0] - 2) and ((
+                                                                                           black_line[0][1] ==
+                                                                                           black_line[1][1] - 1 ==
+                                                                                           black_line[2][1] - 2) or (
+                                                                                           black_line[0][1] ==
+                                                                                           black_line[1][1] + 1 ==
+                                                                                           black_line[2][1] + 2)):
             return BLACK
 
         return None
