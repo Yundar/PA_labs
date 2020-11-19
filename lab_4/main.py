@@ -3,7 +3,6 @@ from lab_4.game import Game
 from lab_4.algorithm import minimax
 import pygame
 
-FPS = 60
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Neutreeko')
 
@@ -21,10 +20,9 @@ def main():
     game = Game(window)
 
     while run:
-        clock.tick(FPS)
 
         if game.turn == WHITE:
-            value, new_board = minimax(game.get_board(), 3, WHITE, game, float('-inf'), float('inf'))
+            value, new_board = minimax(game.get_board(), 4, True, game, float('-inf'), float('inf'))
             game.ai_move(new_board)
 
         for event in pygame.event.get():

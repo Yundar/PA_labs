@@ -27,8 +27,12 @@ def minimax(position, depth, max_player, game, alpha, beta):
             beta = min(beta, evaluation)
             if minEval == evaluation:
                 best_move = move
-            if beta <= alpha:
-                break
+            if beta >= 0:
+                if beta < alpha:
+                    break
+            if beta < 0:
+                if beta <= alpha:
+                    break
         return minEval, best_move
 
 
@@ -48,5 +52,3 @@ def get_all_moves(board, color, game):
             new_board = simulate_move(temp_piece, move, temp_board, game)
             moves.append(new_board)
     return moves
-
-

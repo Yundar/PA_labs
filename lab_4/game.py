@@ -92,6 +92,7 @@ class Game:
                 else:
                     self.turn = 'Black'
                 self.valid_moves = []
+                self.update()
                 messagebox.showinfo('Winner', str(self.turn))
                 return True
 
@@ -119,4 +120,5 @@ class Game:
 
     def ai_move(self, board):
         self.board = board
+        self.update()
         self.winner()

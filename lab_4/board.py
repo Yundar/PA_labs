@@ -1,7 +1,6 @@
 import pygame
 from .constants import BLACK, WHITE, ROWS, SQUARE_SIZE, COLS
 from .piece import Piece
-from copy import deepcopy
 
 
 class Board:
@@ -177,26 +176,41 @@ class Board:
     def evaluate(self):
         black, white_line = self.find_pieces()
         evaluation = 0
+        black_line, white_line = self.find_pieces()
+
         # vertical
         if (white_line[0][0] == white_line[1][0] == white_line[2][0]) and (
                 white_line[0][1] == white_line[1][1] - 1 == white_line[2][1] - 2):
-            evaluation += 10 ** 4
+            evaluation += 100
+        if (black_line[0][0] == black_line[1][0] == black_line[2][0]) and (
+                black_line[0][1] == black_line[1][1] - 1 == black_line[2][1] - 2):
+            evaluation -= 150
 
         # horizontal
         if (white_line[0][1] == white_line[1][1] == white_line[2][1]) and (
                 white_line[0][0] == white_line[1][0] - 1 == white_line[2][0] - 2):
-            evaluation += 10 ** 4
+            evaluation += 100
+        if (black_line[0][1] == black_line[1][1] == black_line[2][1]) and (
+                black_line[0][0] == black_line[1][0] - 1 == black_line[2][0] - 2):
+            evaluation -= 150
 
         # diagonal
         if (white_line[0][0] == white_line[1][0] - 1 == white_line[2][0] - 2) and ((
                                                                                            white_line[0][1] ==
                                                                                            white_line[1][1] - 1 ==
-                                                                                           white_line[2][
-                                                                                               1] - 2) or (
+                                                                                           white_line[2][1] - 2) or (
                                                                                            white_line[0][1] ==
                                                                                            white_line[1][1] + 1 ==
                                                                                            white_line[2][1] + 2)):
-            evaluation += 10 ** 4
+            evaluation += 100
+        if (black_line[0][0] == black_line[1][0] - 1 == black_line[2][0] - 2) and ((
+                                                                                           black_line[0][1] ==
+                                                                                           black_line[1][1] - 1 ==
+                                                                                           black_line[2][1] - 2) or (
+                                                                                           black_line[0][1] ==
+                                                                                           black_line[1][1] + 1 ==
+                                                                                           black_line[2][1] + 2)):
+            evaluation -= 150
 
         return evaluation
 
